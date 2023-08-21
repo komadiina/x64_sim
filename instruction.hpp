@@ -1,16 +1,20 @@
 #pragma once
 
 #include <set>
-#include "operand.hpp"
-
+#include <vector>
 #include <boost/algorithm/string.hpp>
+
+#include "bytecode.hpp"
+#include "memory.hpp"
+#include "utils.hpp"
 
 namespace x64
 {
-    extern std::set<std::string> instruction_set;
-
     class Instruction
     {
+    public:
+        const static int NUM_BYTES = 19; // 1 + 2 + 8 + 8
+
     private:
         std::string lexeme;
         uint8_t bytesign;
@@ -21,29 +25,75 @@ namespace x64
         Instruction(std::string lexeme)
         {
             this->lexeme = lexeme;
-            
+
             // tokenize lexeme
             std::vector<std::string> tokens = {};
             boost::split(tokens, lexeme, boost::is_any_of(" "));
-            
-            // if label (size == 1)
-            if (tokens.size() == 1) {
-                if (tokens[0][tokens[0].size() - 1] == ':') {
-                    // put the label in the labels map
-                    std::string label = tokens[0].substr(0, tokens[0].size() - 1);
-                    labels[label] = rip;
-                }
-                else if (tokens[0] == "BRK") {
-                        
-                } else if (tokens[0] == "INPUT") {
-                    
-                }
-            }            
-            else if (tokens.size() == 2) {
-                
-            } else if (tokens.size() == 3) {
-                
+
+            if (tokens.size() == 1 && tokens[0] == "breakpoint")
+            {
+                bytesign = x64::bytesigns::breakpoint;
             }
+            else if (tokens.size() == 2)
+            {
+                bytesign = x64::bytesigns::bytemap.at(tokens[0]);
+                op1type = utils::get_operand_type(tokens[1]);
+                op1value = utils::get_operand_value(op1type, tokens[1]);
+
+                op2type = 0;
+                op2value = 0;
+            }
+            else if (tokens.size() == 3)
+            {
+                bytesign = x64::bytesigns::bytemap.at(tokens[0]);
+
+                op1type = utils::get_operand_type(tokens[1]);
+                op1value = utils::get_operand_value(op1type, tokens[1]);
+
+                op2type = utils::get_operand_type(tokens[2]);
+                op2value = utils::get_operand_value(op2type, tokens[2]);
+            }
+            else
+            {
+                handle_error("Invalid instruction: " + lexeme);
+                exit(0xFF);
+            }
+        }
+
+        Instruction(const std::vector<uint8_t> &bytes)
+        {
+            bytesign = bytes[0];
+            op1type = bytes[1];
+            op2type = bytes[2];
+
+            op1value = utils::to_int<uint64_t>(bytes, 3);
+            op2value = utils::to_int<uint64_t>(bytes, 11);
+        }
+
+        static std::vector<uint8_t> to_bytecode(const Instruction &instr)
+        {
+            std::vector<uint8_t> bytecode = {instr.bytesign};
+            bytecode.push_back(instr.op1type);
+            bytecode.push_back(instr.op2type);
+
+            std::vector<uint8_t> op1bytes = utils::to_bytes(instr.op1value);
+            bytecode.insert(bytecode.end(), op1bytes.begin(), op1bytes.end());
+            std::vector<uint8_t> op2bytes = utils::to_bytes(instr.op2value);
+            bytecode.insert(bytecode.end(), op2bytes.begin(), op2bytes.end());
+
+            return bytecode;
+        }
+
+        void execute()
+        {
+        }
+
+    private:
+        void handle_error(const std::string &message)
+        {
+            std::cerr << message << std::endl;
+            throw std::invalid_argument(message);
+            exit(1);
         }
     };
 
