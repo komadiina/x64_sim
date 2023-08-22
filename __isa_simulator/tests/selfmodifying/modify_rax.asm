@@ -1,6 +1,0 @@
-MOV rax, 5
-XOR rax, 0
-BRK
-
-MOV RAX, 1
-BRK
