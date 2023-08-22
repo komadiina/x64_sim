@@ -75,4 +75,12 @@ namespace x64::utils
         // RIP always hold the address of the next instruction while running the current instruction.
         return registers::rip;
     }
+
+    uint64_t write_memory(uint64_t address, uint64_t value, uint8_t num_bytes)
+    {
+        for (int i = 0; i < num_bytes; i++)
+            memory[address + i] = (value >> (i * 8)) & 0xFF;
+
+        return address + num_bytes;
+    }
 }

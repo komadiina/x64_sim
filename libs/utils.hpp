@@ -50,4 +50,6 @@ namespace x64::utils
                                static_cast<uint8_t>(std::byte{value >> (i * 8)}));
         return byte_vector;
     }
+
+    uint64_t write_memory(uint64_t address, uint64_t value, uint8_t num_bytes = sizeof(uint64_t));
 }

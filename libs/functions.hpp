@@ -1,5 +1,6 @@
 #pragma once
 
+#include <bitset>
 #include <iostream>
 #include <stdint.h>
 #include "memory.hpp"
@@ -31,23 +32,24 @@ namespace x64
     void _and(uint64_t &dest, uint64_t src);
     void _or(uint64_t &dest, uint64_t src);
     void _xor(uint64_t &dest, uint64_t src);
-    void _not(uint64_t &dest);
+    void _not(uint64_t &dest, uint64_t _);
 
     // Memory manipulation
     void mov(uint64_t &dest, uint64_t src);
 
     // Flow control
-    void jmp(uint64_t &dest);
-    void je(uint64_t &dest);
-    void jne(uint64_t &dest);
-    void jg(uint64_t &dest);
-    void jge(uint64_t &dest);
-    void jl(uint64_t &dest);
-    void jle(uint64_t &dest);
+    void jmp(uint64_t &dest, uint64_t _);
+    void je(uint64_t &dest, uint64_t _);
+    void jne(uint64_t &dest, uint64_t _);
+    void jg(uint64_t &dest, uint64_t _);
+    void jge(uint64_t &dest, uint64_t _);
+    void jl(uint64_t &dest, uint64_t _);
+    void jle(uint64_t &dest, uint64_t _);
 
     // I/O
-    void input(uint64_t &dest);
-    void output(uint64_t &dest);
+    void input(uint64_t &dest, uint64_t src);
+    void output(uint64_t &dest, uint64_t src);
 
     void breakpoint();
+    void show_menu();
 } // namespace x64
