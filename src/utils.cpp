@@ -83,4 +83,13 @@ namespace x64::utils
 
         return address + num_bytes;
     }
+
+    void update_registers()
+    {
+        // Save RIP value
+        write_memory(register_offsets["rip"], registers::rip, 8);
+
+        for (auto [reg_name, offset] : register_offsets)
+            *x64::register_table[reg_name] = read_bytes(offset, 8);
+    }
 }

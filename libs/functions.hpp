@@ -3,21 +3,16 @@
 #include <bitset>
 #include <iostream>
 #include <stdint.h>
+
 #include "memory.hpp"
 #include "utils.hpp"
-
-#include <boost/variant/variant.hpp>
-
-class Instruction;
 
 namespace x64
 {
     // Utility
     void setbit(uint16_t bitflag);
     void clearbit(uint16_t bitflag);
-
-    void setflag(uint16_t flag);
-    void toggleflag(uint16_t flag);
+    void togglebit(uint16_t bitflag);
 
     // Arithmetic
     void add(uint64_t &dest, uint64_t src);
@@ -50,6 +45,8 @@ namespace x64
     void input(uint64_t &dest, uint64_t src);
     void output(uint64_t &dest, uint64_t src);
 
-    void breakpoint();
+    extern std::unordered_map<uint8_t, std::function<void(uint64_t &, uint64_t)>> instructions;
+
+    void breakpoint(uint64_t &, uint64_t);
     void show_menu();
 } // namespace x64

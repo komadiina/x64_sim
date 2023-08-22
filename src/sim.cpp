@@ -7,7 +7,9 @@
 
 #include <iostream>
 
-int main(int argC, char **argV)
+// !!! _main
+
+int _main(int argC, char **argV)
 {
     if (argC != 2)
     {

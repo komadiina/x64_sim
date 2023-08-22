@@ -1,5 +1,7 @@
-*.o
 __*
+*.o
 *.exe
 *.bin
-build/*
+
+build/
+.vscode/

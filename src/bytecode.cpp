@@ -2,8 +2,6 @@
 
 namespace x64
 {
-    std::vector<Instruction> read_instructions = {};
-
     std::vector<std::string> fetch_code(const std::string &filename)
     {
         std::ifstream file(filename);
@@ -13,6 +11,11 @@ namespace x64
         std::vector<std::string> code;
         while (std::getline(file, line, '\n'))
         {
+            std::string buf = line;
+            buf = std::to_string(static_cast<int>(line_number)) + ": " + buf; // vuln to overflow violation
+            source.push_back(buf);
+            line_number++;
+
             if (line == "" || line[0] == ';' || line.empty())
                 continue;
 
@@ -25,7 +28,6 @@ namespace x64
             boost::algorithm::replace_all(line, ",", "");
 
             code.push_back(line);
-            line_number++;
         }
 
         file.close();
@@ -54,10 +56,10 @@ namespace x64
         while (registers::rip < memory.size())
             try
             {
-                Instruction i = Instruction::interpret_bytes(registers::rip);
-                std::cout << i << std::endl;
-                i.execute();
-                // Instruction::interpret_bytes(registers::rip).execute();
+                //     Instruction i = Instruction::interpret_bytes(registers::rip);
+                //     std::cout << i << std::endl;
+                //     i.execute();
+                Instruction::interpret_bytes(registers::rip).execute();
             }
             catch (...)
             { // x64::memory out_of_bounds exception (end of program)

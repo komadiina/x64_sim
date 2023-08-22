@@ -60,6 +60,8 @@ namespace x64
             {"out", output},
             {"breakpoint", breakpoint}};
     };
+    
+    extern std::vector<std::string> source;
 
     std::vector<std::string> fetch_code(const std::string &filename);
     void write_bytecode(const std::vector<std::string> &code);

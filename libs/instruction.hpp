@@ -103,7 +103,26 @@ namespace x64
 
         void execute()
         {
-            std::cout << "executing (lol)..." << std::endl;
+            uint64_t arg1 = op1value, arg2 = op2value;
+
+            // std::cout << "RIP: " << registers::rip << std::endl;
+            // std::cout << "Executing: " << static_cast<int>(bytesign) << std::endl;
+
+            if (op1type != x64::NONE || op2type != x64::NONE)
+            {
+                if (op1type == x64::IMMEDIATE)
+                    utils::write_memory(0x0, op1value, 8); // store in RAX
+                else if (op1type == x64::ADDRESS)
+                    arg1 = utils::read_bytes(op1value, 8);
+
+                // second argument is always 'unaffected'
+                if (op2type == x64::REGISTER || op2type == x64::ADDRESS)
+                    // fetch register/address value
+                    arg2 = utils::read_bytes(op2value, 8);
+            }
+
+            // std::cout << "arg1: " << arg1 << " | arg2: " << arg2 << std::endl;
+            instructions.at(bytesign)(arg1, arg2);
         }
 
     private:
@@ -128,6 +147,6 @@ namespace x64
         }
     };
 
-    // 00_00 | 0000 0000 0000 0000 | 0000 0000 0000 0000 -> 18 bytes
-    // instr_(op1type,op2type) | op1value | op2value
+    // 00| 00 00 | 0000 0000 0000 0000 | 0000 0000 0000 0000 -> 18 bytes
+    // instr | op1type op2type | op1value | op2value
 }

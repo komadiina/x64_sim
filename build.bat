@@ -14,7 +14,7 @@ FOR %%f IN (%CD%\src\*) DO (g++ -c "%%f" -o "%out_dir%%%~nf.o" -g -Wnarrowing -W
 
 echo Compiled libraries.
 
-g++ %out_dir%*.o -o %binaries%sim.exe -g
+g++ %out_dir%*.o -o %binaries%sim.exe -g -Wnarrowing -Wreturn-type
 
 mv %binaries%sim.exe %CD%\sim.exe
 

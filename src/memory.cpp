@@ -35,16 +35,18 @@ namespace x64
 
     std::unordered_map<std::string, uint8_t> register_offsets = {
         {"rax", 0},
-        {"rbx", 7},
-        {"rcx", 15},
-        {"rdx", 23},
-        {"rip", 31},
-        {"rsp", 39},
-        {"r1", 47},
-        {"r2", 55},
-        {"r3", 63},
-        {"r4", 71},
-        {"rio", 79}};
+        {"rbx", 8},
+        {"rcx", 16},
+        {"rdx", 24},
+        {"rip", 32},
+        {"rsp", 40},
+        {"r1", 48},
+        {"r2", 56},
+        {"r3", 64},
+        {"r4", 72},
+        {"rio", 80}};
+        
+    std::vector<std::string> source = {};
 
     uint64_t CODE_START = 0x100;
 
