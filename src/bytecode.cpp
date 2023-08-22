@@ -2,6 +2,8 @@
 
 namespace x64
 {
+    std::vector<Instruction> read_instructions = {};
+
     std::vector<std::string> fetch_code(const std::string &filename)
     {
         std::ifstream file(filename);
@@ -9,15 +11,18 @@ namespace x64
 
         uint16_t line_number = 1;
         std::vector<std::string> code;
-        while (std::getline(file, line))
+        while (std::getline(file, line, '\n'))
         {
-            boost::to_lower(line);
-            boost::algorithm::replace_all(line, ",", "");
+            if (line == "" || line[0] == ';' || line.empty())
+                continue;
 
             if (!lexer::lex_line(line))
             {
                 throw std::invalid_argument("Invalid line " + std::to_string(line_number) + ": " + line);
             };
+
+            boost::to_lower(line);
+            boost::algorithm::replace_all(line, ",", "");
 
             code.push_back(line);
             line_number++;
@@ -36,7 +41,10 @@ namespace x64
             if (utils::is_label(line))
                 labels[line.substr(0, line.size() - 1)] = registers::rip;
             else
+            {
+                read_instructions.push_back(Instruction(line));
                 utils::write_bytes(Instruction::to_bytecode(Instruction(line)));
+            }
         }
     }
 

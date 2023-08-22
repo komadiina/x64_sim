@@ -5,6 +5,7 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include <deque>
 
 #include "functions.hpp"
 #include "lexing.hpp"
@@ -67,3 +68,4 @@ namespace x64
 }
 
 #include "instruction.hpp"
+namespace x64 { extern std::vector<Instruction> read_instructions; }

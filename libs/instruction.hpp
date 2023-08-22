@@ -33,6 +33,10 @@ namespace x64
             if (tokens.size() == 1 && tokens[0] == "breakpoint")
             {
                 bytesign = x64::bytesigns::breakpoint;
+                op1type = x64::NONE;
+                op2type = x64::NONE;
+                op1value = 0;
+                op2value = 0;
             }
             else if (tokens.size() == 2)
             {
@@ -40,8 +44,8 @@ namespace x64
                 op1type = utils::get_operand_type(tokens[1]);
                 op1value = utils::get_operand_value(op1type, tokens[1]);
 
-                op2type = 0;
-                op2value = 0;
+                op2type = x64::NONE;
+                op2value = x64::NONE;
             }
             else if (tokens.size() == 3)
             {
@@ -104,6 +108,19 @@ namespace x64
             std::cerr << message << std::endl;
             throw std::invalid_argument(message);
             exit(1);
+        }
+
+    public:
+        friend std::ostream &operator<<(std::ostream &os, const Instruction &instr)
+        {
+            os << "instruction: " << instr.lexeme << std::endl;
+            os << "bytesign: " << std::to_string(instr.bytesign) << std::endl;
+            os << "op1type: " << std::to_string(instr.op1type) << std::endl;
+            os << "op2type: " << std::to_string(instr.op2type) << std::endl;
+            os << "op1value: " << std::to_string(instr.op1value) << std::endl;
+            os << "op2value: " << std::to_string(instr.op2value) << std::endl;
+
+            return os;
         }
     };
 

@@ -10,3 +10,5 @@ in code:
 
 `IN <register> <value>`,  e.g. `IN RAX, 50`  
 `OUT <register>`, e.g. `OUT RAX` -> `"RAX = 50"`
+
+labels **must start** with '`_`' (a single underscore)

@@ -1,4 +1,5 @@
 #include "../libs/functions.hpp"
+#include "../libs/instruction.hpp"
 
 namespace x64
 {
@@ -9,10 +10,7 @@ namespace x64
     void toggleflag(uint16_t flag) { registers::flags ^= flag; }
 
     // Arithmetic
-    void add(uint64_t &dest, uint64_t src)
-    {
-        dest += src;
-    }
+    void add(uint64_t &dest, uint64_t src) { dest += src; }
     void sub(uint64_t &dest, uint64_t src) { dest -= src; }
     void mul(uint64_t &dest, uint64_t src) { dest *= src; }
     void div(uint64_t &dest, uint64_t src) { dest /= src; }
@@ -50,7 +48,7 @@ namespace x64
     void mov(uint64_t &dest, uint64_t src) { dest = src; }
 
     // Flow control
-    void jmp(uint64_t &dest) { registers::rip = dest; }
+    void jmp(uint64_t &dest) { registers::rip = dest; } // or ++dest?
     void je(uint64_t &dest)
     {
         if (registers::flags & registers::ZF && !(registers::flags & registers::CF))

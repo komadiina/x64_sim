@@ -53,4 +53,5 @@ namespace x64
 
     // "interpreter"
     void run(const Instruction &instr);
+
 } // namespace x64

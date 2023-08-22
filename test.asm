@@ -1,0 +1,7 @@
+MOV RAX, 99999999
+ADD RBX, RAX
+
+_label:
+BREAKPOINT
+CMP RAX, RBX
+JE _label
