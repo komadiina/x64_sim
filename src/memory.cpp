@@ -14,7 +14,9 @@ namespace x64
 
         // carry, parity, adjust, zero, sign, trap, interrupt, direction, overflow
         uint16_t CF, PF, AF, ZF, SF, TF, IF, DF, OF;
-    } // namespace registers
+
+        uint8_t offset = 8; // 8 bytes
+    }                       // namespace registers
 
     std::map<uint64_t, uint8_t> memory;
     std::map<std::string, uint64_t> labels;
@@ -44,7 +46,7 @@ namespace x64
         {"r4", 71},
         {"rio", 79}};
 
-    uint64_t CODE_START = 0xF00;
+    uint64_t CODE_START = 0x100;
 
     uint8_t NONE = 0b0000;
     uint8_t REGISTER = 0b0001;

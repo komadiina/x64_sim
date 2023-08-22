@@ -42,35 +42,26 @@ namespace x64
                 labels[line.substr(0, line.size() - 1)] = registers::rip;
             else
             {
-                read_instructions.push_back(Instruction(line));
-                utils::write_bytes(Instruction::to_bytecode(Instruction(line)));
+                utils::write_bytes(Instruction::to_bytecode(Instruction(line)), true);
             }
         }
     }
 
-    /*
-    Instruction interpret_bytes(const uint64_t &address)
-    {
-        std::vector<uint8_t> bytes = {};
-        for (int i = 0; i < 8; i++)
-            bytes.push_back(memory[address + i]);
-
-        registers::rip += Instruction::NUM_BYTES;
-        return Instruction(bytes);
-    }
-    */
-
     void run()
     {
-        registers::rip = 0;
+        registers::rip = CODE_START;
 
-        try
-        {
-            Instruction::interpret_bytes(registers::rip).execute();
-        }
-        catch (...)
-        { // x64::memory out_of_bounds exception (end of program)
-        }
+        while (registers::rip < memory.size())
+            try
+            {
+                Instruction i = Instruction::interpret_bytes(registers::rip);
+                std::cout << i << std::endl;
+                i.execute();
+                // Instruction::interpret_bytes(registers::rip).execute();
+            }
+            catch (...)
+            { // x64::memory out_of_bounds exception (end of program)
+            }
 
         std::cout << "<end>" << std::endl;
     }

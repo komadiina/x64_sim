@@ -50,8 +50,4 @@ namespace x64
     void output(uint64_t &dest);
 
     void breakpoint();
-
-    // "interpreter"
-    void run(const Instruction &instr);
-
 } // namespace x64

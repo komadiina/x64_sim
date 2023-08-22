@@ -68,4 +68,3 @@ namespace x64
 }
 
 #include "instruction.hpp"
-namespace x64 { extern std::vector<Instruction> read_instructions; }

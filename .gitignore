@@ -1,3 +1,5 @@
 *.o
 __*
 *.exe
+*.bin
+build/*

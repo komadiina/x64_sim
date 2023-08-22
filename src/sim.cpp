@@ -14,7 +14,7 @@ int main(int argC, char **argV)
         std::cout << "Usage: sim.exe <file>.asm" << std::endl;
         exit(1);
     }
-    
+
     x64::init_registers();
 
     std::string target_file = argV[1];
@@ -23,11 +23,6 @@ int main(int argC, char **argV)
         std::cout << l << std::endl;
 
     x64::write_bytecode(code);
-
-    std::cout << "---- INSTRUCTIONS ----" << std::endl;
-
-    for (const auto &i : x64::read_instructions)
-        std::cout << i << std::endl;
 
     std::cout << "---- LABELS ----" << std::endl;
 
@@ -41,6 +36,8 @@ int main(int argC, char **argV)
     std::cout << std::dec;
 
     std::cout << x64::utils::read_bytes(0x0b, 8, true) << std::endl;
+
+    x64::run();
 
     return 0;
 }

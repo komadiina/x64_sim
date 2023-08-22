@@ -1,5 +1,4 @@
 #include "../libs/functions.hpp"
-#include "../libs/instruction.hpp"
 
 namespace x64
 {
@@ -96,10 +95,5 @@ namespace x64
     {
         std::cout << "Breakpoint reached." << std::endl;
         // TODO
-    }
-
-    // "interpreter"
-    void run(const Instruction &instr)
-    {
     }
 }

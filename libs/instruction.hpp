@@ -16,7 +16,7 @@ namespace x64
         const static int NUM_BYTES = 19; // 1 + 2 + 8 + 8
 
     private:
-        std::string lexeme;
+        std::string lexeme = "<undefined>";
         uint8_t bytesign;
         uint8_t op1type, op2type;
         uint64_t op1value, op2value;
@@ -81,8 +81,11 @@ namespace x64
             bytecode.push_back(instr.op2type);
 
             std::vector<uint8_t> op1bytes = utils::to_bytes(instr.op1value);
+            std::reverse(op1bytes.begin(), op1bytes.end());
             bytecode.insert(bytecode.end(), op1bytes.begin(), op1bytes.end());
+
             std::vector<uint8_t> op2bytes = utils::to_bytes(instr.op2value);
+            std::reverse(op2bytes.begin(), op2bytes.end());
             bytecode.insert(bytecode.end(), op2bytes.begin(), op2bytes.end());
 
             return bytecode;
@@ -91,7 +94,7 @@ namespace x64
         static Instruction interpret_bytes(const uint64_t &address)
         {
             std::vector<uint8_t> bytes = {};
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < NUM_BYTES; i++)
                 bytes.push_back(memory[address + i]);
 
             registers::rip += Instruction::NUM_BYTES;
@@ -100,6 +103,7 @@ namespace x64
 
         void execute()
         {
+            std::cout << "executing (lol)..." << std::endl;
         }
 
     private:
@@ -118,7 +122,7 @@ namespace x64
             os << "op1type: " << std::to_string(instr.op1type) << std::endl;
             os << "op2type: " << std::to_string(instr.op2type) << std::endl;
             os << "op1value: " << std::to_string(instr.op1value) << std::endl;
-            os << "op2value: " << std::to_string(instr.op2value) << std::endl;
+            os << "op2value: " << std::to_string(instr.op2value);
 
             return os;
         }

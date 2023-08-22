@@ -21,13 +21,13 @@ namespace x64
         extern uint16_t CF, PF, AF, ZF, SF, TF, IF, DF, OF;
 
         // Memory offsets
-        extern uint8_t offset = 8; // 8 bytes
+        extern uint8_t offset; // 8 bytes
     }                              // namespace registers
 
     extern std::map<uint64_t, uint8_t> memory;
     extern std::map<std::string, uint64_t> labels;
     extern std::unordered_map<std::string, uint64_t *> register_table;
-
+    extern std::unordered_map<std::string, uint8_t> register_offsets;
     extern uint64_t CODE_START;
 
     extern uint8_t LABEL;

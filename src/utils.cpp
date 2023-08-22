@@ -49,12 +49,9 @@ namespace x64::utils
     uint64_t get_operand_value(uint8_t type, const std::string &lexeme)
     {
         if (type == x64::IMMEDIATE)
-        {
-            std::cout << lexeme << std::endl;
             return stoi(lexeme, nullptr, 10);
-        }
         else if (type == x64::REGISTER)
-            return get_register_value(lexeme);
+            return register_offsets[lexeme];
         else if (type == x64::LABEL)
             return x64::labels[lexeme];
         else // register addressing
@@ -63,21 +60,14 @@ namespace x64::utils
 
     uint64_t read_bytes(const uint64_t &address, int num_bytes, bool little_endian)
     {
-        std::vector<uint8_t> bytes = {};
-        for (std::size_t ip = 0; ip < num_bytes; ++ip)
-            bytes.insert(bytes.begin(), x64::memory[address + ip * 0x01]);
-
-        if (!little_endian)
-            std::reverse(bytes.begin(), bytes.end());
-
-        uint64_t value = 0LL;
+        uint64_t value = 0;
         for (int i = 0; i < num_bytes; i++)
-            value |= static_cast<uint64_t>(bytes[i]) << (i * 8);
+            value |= memory[address + i] << (i * 8);
 
         return value;
     }
 
-    uint64_t write_bytes(const std::vector<uint8_t> &bytes)
+    uint64_t write_bytes(std::vector<uint8_t> bytes, bool little_endian)
     {
         for (uint8_t byte : bytes)
             memory[registers::rip++] = byte;
