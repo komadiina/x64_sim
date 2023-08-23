@@ -67,6 +67,9 @@ namespace x64
     void write_bytecode(const std::vector<std::string> &code);
     // Instruction interpret_bytes(const uint64_t &address);
     void run();
+    
+    
+    void next(); // debugging
 }
 
 #include "instruction.hpp"

@@ -1,5 +1,4 @@
 MOV RAX, 50
-BREAKPOINT
 
 _label:
 ADD RBX, RAX

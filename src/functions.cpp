@@ -49,9 +49,23 @@ namespace x64
                  { return src; });
     }
 
-    void sub(uint64_t &dest, uint64_t src) { dest -= src; }
-    void mul(uint64_t &dest, uint64_t src) { dest *= src; }
-    void div(uint64_t &dest, uint64_t src) { dest /= src; }
+    void sub(uint64_t &dest, uint64_t src)
+    {
+        uint64_t value = utils::read_bytes(dest, sizeof(uint64_t)) - src;
+        utils::write_memory(dest, value, sizeof(uint64_t));
+    }
+
+    void mul(uint64_t &dest, uint64_t src)
+    {
+        uint64_t value = utils::read_bytes(dest, sizeof(uint64_t)) * src;
+        utils::write_memory(dest, value, sizeof(uint64_t));
+    }
+
+    void div(uint64_t &dest, uint64_t src)
+    {
+        uint64_t value = utils::read_bytes(dest, sizeof(uint64_t)) / src;
+        utils::write_memory(dest, value, sizeof(uint64_t));
+    }
 
     // Assembly-type comparison using the 'flags' register
     void cmp(uint64_t &dest, uint64_t src)
@@ -86,10 +100,29 @@ namespace x64
     }
 
     // Bitwise
-    void _and(uint64_t &dest, uint64_t src) { dest &= src; }
-    void _or(uint64_t &dest, uint64_t src) { dest |= src; }
-    void _xor(uint64_t &dest, uint64_t src) { dest ^= src; }
-    void _not(uint64_t &dest, uint64_t _) { dest = ~dest; }
+    void _and(uint64_t &dest, uint64_t src)
+    {
+        uint64_t value = utils::read_bytes(dest, sizeof(uint64_t)) & src;
+        utils::write_memory(dest, value, sizeof(uint64_t));
+    }
+
+    void _or(uint64_t &dest, uint64_t src)
+    {
+        uint64_t value = utils::read_bytes(dest, sizeof(uint64_t)) | src;
+        utils::write_memory(dest, value, sizeof(uint64_t));
+    }
+
+    void _xor(uint64_t &dest, uint64_t src)
+    {
+        uint64_t value = utils::read_bytes(dest, sizeof(uint64_t)) ^ src;
+        utils::write_memory(dest, value, sizeof(uint64_t));
+    }
+
+    void _not(uint64_t &dest, uint64_t _)
+    {
+        uint64_t value = ~utils::read_bytes(dest, sizeof(uint64_t));
+        utils::write_memory(dest, value, sizeof(uint64_t));
+    }
 
     // Memory manipulation
     // void mov(uint64_t &dest, uint64_t src) { dest = src; }
@@ -153,7 +186,6 @@ namespace x64
     {
         std::cout << "Breakpoint reached." << std::endl;
         std::cout << "RIP = " << registers::rip << std::endl;
-        // TODO
         show_menu();
     }
 
@@ -245,7 +277,8 @@ namespace x64
             break;
 
         case 7:
-            // TODO: Next instruction
+            x64::next();
+            std::cout << "Next instruction executed, RIP = " << registers::rip << std::endl;
             break;
 
         case 8:

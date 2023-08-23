@@ -19,6 +19,8 @@ namespace x64
             if (line == "" || line[0] == ';' || line.empty())
                 continue;
 
+            boost::algorithm::replace_all(line, "\t", "");
+
             if (!lexer::lex_line(line))
             {
                 throw std::invalid_argument("Invalid line " + std::to_string(line_number) + ": " + line);
@@ -66,5 +68,13 @@ namespace x64
             }
 
         std::cout << "<end>" << std::endl;
+    }
+    
+    void next() {
+        if (registers::rip >= source.size()) {
+            return;
+        }
+
+        Instruction::interpret_bytes(registers::rip).execute();
     }
 }

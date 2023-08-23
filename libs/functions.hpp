@@ -50,3 +50,5 @@ namespace x64
     void breakpoint(uint64_t &, uint64_t);
     void show_menu();
 } // namespace x64
+
+#include "bytecode.hpp"

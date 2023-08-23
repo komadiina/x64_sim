@@ -47,7 +47,9 @@ namespace x64::utils
         std::vector<uint8_t> byte_vector;
         for (std::size_t i = 0; i < sizeof(value); ++i)
             byte_vector.insert(byte_vector.begin(),
-                               static_cast<uint8_t>(std::byte{value >> (i * 8)}));
+                               //    static_cast<uint8_t>(std::byte{value >> (i * 8)}));
+                               static_cast<uint8_t>(value >> (i * 8))); // revert back if code breaks :')
+
         return byte_vector;
     }
 
